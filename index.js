@@ -212,7 +212,7 @@ function toggleModal(show, modal = elements.modalWindow) {
     console.log('Element not found');
     // Handle the case where the element doesn't exist
   }
-  modal.style.display = show ? '' : 'none'; 
+   
 }
 
 /*************************************************************************************************************************************************
