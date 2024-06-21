@@ -97,7 +97,7 @@ function filterAndDisplayTasksByBoard(boardName) {
     column.appendChild(tasksContainer);
 
     filteredTasks
-      .filter((task) => task.status === status).filter(task => task.status === status)
+      .filter((task) => task.status === status)
       .forEach((task) => { 
         const taskElement = document.createElement("div");
         taskElement.classList.add("task-div");
@@ -125,7 +125,7 @@ function refreshTasksUI() {
 function styleActiveBoard(boardName) {
   document.querySelectorAll('.board-btn').foreach((btn => { 
     
-    if(btn.textContent === boardName) {
+    if (btn.textContent === boardName) {
       btn.classList.add('active'); 
     } else {
       btn.classList.remove('active'); 
@@ -143,7 +143,7 @@ function addTaskToUI(task) {
     return;
   }
 
-  let tasksContainer = column.tasksContainerAll;
+  let tasksContainer = column.querySelector('.tasks-container');
   if (!tasksContainer) {
     console.warn(
       `Tasks container not found for status: ${task.status}, creating one.`
@@ -165,14 +165,12 @@ function addTaskToUI(task) {
 
 function setupEventListeners() {
   // Cancel editing task event listener
-  const cancelEditBtn = document.getElementById('cancel-edit-btn');
-  cancelEditBtn.addEventListener('click', () => 
+  elements.cancelEditBtn.addEventListener('click', () => 
     toggleModal(false, elements.editTaskModal)
 );
 
   // Cancel adding new task event listener
-  const cancelAddTaskBtn = document.getElementById('cancel-add-task-btn');
-  cancelAddTaskBtn.addEventListener('click', () => {
+  elements.cancelAddTaskBtn.addEventListener('click', () => {
     toggleModal(false);
     elements.filterDiv.style.display = 'none'; // Also hide the filter overlay
   });
@@ -198,21 +196,14 @@ function setupEventListeners() {
 
   // Add new task form submission event listener
   elements.modalWindow.addEventListener('submit',  (event) => {
-    addTask(event)
+    addTask(event);
   });
 }
 
 // Toggles tasks modal
 function toggleModal(show, modal = elements.modalWindow) {
-  const element = document.getElementById(''); // or however you're selecting the element
-  
-  if (element) {
-    // It's safe to access element.style here
-    element.style.display = 'block'; // or whatever you're trying to do
-  } else {
-    console.log('Element not found');
-    // Handle the case where the element doesn't exist
-  }
+  modal.style.display = show ? 'block' : 'none';
+  elements.filterDiv.style.display = show ? 'block' : 'none';
    
 }
 
@@ -226,10 +217,10 @@ function addTask(event) {
 
   // Collect form data (assuming form fields exist)
   const  task = {
-    title = document.getElementById('task-title').value,
-    status = document.getElementById('select-status').value,
-    description = document.getElementById('desc-input').value,
-    board = activeBoard,
+    title: document.getElementById('task-title').value,
+    status: document.getElementById('select-status').value,
+    description: document.getElementById('desc-input').value,
+    board: activeBoard,
 
 
   //Assign user input to the task object
@@ -248,7 +239,7 @@ function addTask(event) {
 
 function toggleSidebar(show) {
   if (show) {
-    elements.sidebar.display = 'flex';
+    elements.sidebar.style.display = 'flex';
     elements.showSideBarBtn.style.display = 'none';
   } else {
     elements.sidebar.style.display = 'none';
@@ -258,15 +249,12 @@ function toggleSidebar(show) {
 
 function toggleTheme() {
   const body = document.body;
-  
   body.classList.toggle('light-theme');
   body.classList.toggle('dark-theme');
 
 
   const logo = document.getElementById('logo');
-
-  const isLightTheme = document.body.contains('light-theme');
-
+  const isLightTheme = body.classList.contains('light-theme');
   logo.src = isLightTheme ? './assets/logo-light.svg' : './assets/logo-dark.svg'; 
 }
 
@@ -279,7 +267,7 @@ function openEditTaskModal(task) {
   const titleInput = document.getElementById('edit-task-title-input');
   const descInput = document.getElementById('edit-task-desc-input');
   const statusSelect = document.getElementById('edit-select-status');
-  document.getElementById('edit-task-status').value = task.status;
+  
 
   titleInput.value = task.title;
   descInput.value = task.description;
@@ -294,7 +282,7 @@ function openEditTaskModal(task) {
 });
 
   // Delete task using a helper function and close the task modal
-  deleteTask.addEventListener('click', () => {
+  deleteTaskBtn.addEventListener('click', () => {
   deleteTask(task.id);
   toggleModal(false, elements.editTaskModal);
   location.reload();
