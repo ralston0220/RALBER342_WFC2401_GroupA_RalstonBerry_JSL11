@@ -32,13 +32,13 @@ const elements = {
     cancelEditBtn: document.getElementById("cancel-edit-btn"),
     cancelAddTaskBtn: document.getElementById("cancel-add-task-btn"),
     sidebar: document.getElementById("side-bar-div"),
-    tasksContainerAll: document.getElementById(".tasks-container"),
+    tasksContainerAll: document.querySelector(".tasks-container"),
 
 
 
 }
 
-let activeBoard = ""
+let activeBoard = "";
 
 // Extracts unique board names from tasks
 // TASK: FIX BUGS
@@ -93,6 +93,7 @@ function filterAndDisplayTasksByBoard(boardName) {
                         </div>`;
 
     const tasksContainer = document.createElement("div");
+    tasksContainer.className = 'tasks-container';
     column.appendChild(tasksContainer);
 
     filteredTasks
@@ -246,7 +247,7 @@ function addTask(event) {
 
 
 function toggleSidebar(show) {
-  is (show) {
+  if (show) {
     elements.sidebar.display = 'flex';
     elements.showSideBarBtn.style.display = 'none';
   } else {
