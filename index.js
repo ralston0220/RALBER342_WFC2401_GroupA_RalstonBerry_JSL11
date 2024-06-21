@@ -20,6 +20,7 @@ function initializeData() {
 // TASK: Get elements from the DOM
 const elements = {
     createNewTaskBtn: document.getElementById("add-new-task-btn"),
+    createTaskBtn: document.getElementById("create-task-btn"),
     columnDivs: document.querySelectorAll(".column-div"),
     themeSwitch: document.getElementById("theme-switch"),
     modalWindow: document.getElementById("modal-window"),
@@ -27,7 +28,13 @@ const elements = {
     editTaskModal: document.getElementById("edit-task-modal"),
     hideSideBarBtn: document.getElementById("hide-side-bar-btn"),
     showSideBarBtn: document.getElementById("show-side-bar-btn"),
-    headerBoardName: document.getElementById("header-board-name")
+    headerBoardName: document.getElementById("header-board-name"),
+    cancelEditBtn: document.getElementById("cancel-edit-btn"),
+    cancelAddTaskBtn: document.getElementById("cancel-add-task-btn"),
+    sidebar: document.getElementById("side-bar-div"),
+    tasksContainerAll: document.getElementById(".tasks-container"),
+
+
 
 }
 
@@ -57,7 +64,7 @@ function displayBoards(boards) {
     const boardElement = document.createElement("button");
     boardElement.textContent = board;
     boardElement.classList.add("board-btn");
-    boardElement.addEventListener('click' () => {
+    boardElement.addEventListener('click', () => {
       elements.headerBoardName.textContent = board;
       filterAndDisplayTasksByBoard(board);
       activeBoard = board; //assigns active board
@@ -95,7 +102,7 @@ function filterAndDisplayTasksByBoard(boardName) {
       taskElement.setAttribute('data-task-id', task.id);
 
       // Listen for a click event on each task and open a modal
-      taskElement.addEventListener('click' () => { 
+      taskElement.addEventListener('click', () => { 
         openEditTaskModal(task);
       });
 
@@ -187,9 +194,17 @@ function setupEventListeners() {
 }
 
 // Toggles tasks modal
-// Task: Fix bugs
 function toggleModal(show, modal = elements.modalWindow) {
-  modal.style.display = show ? 'block' : 'none'; 
+  const element = document.getElementById(''); // or however you're selecting the element
+  
+  if (element) {
+    // It's safe to access element.style here
+    element.style.display = 'block'; // or whatever you're trying to do
+  } else {
+    console.log('Element not found');
+    // Handle the case where the element doesn't exist
+  }
+  modal.style.display = show ? '' : 'none'; 
 }
 
 /*************************************************************************************************************************************************
@@ -258,16 +273,18 @@ function openEditTaskModal(task) {
  saveChangesBtn.onclick = () => saveTaskChanges(task.id);
 
   // Delete task using a helper function and close the task modal
-  deleteTask.onclick = () => 
-    deleteTask(task.id);
-    toggleModal(false, elements.editTaskModal);
-    refreshTasksUI();
+  deleteTask.onclick = () => {
+  deleteTask(task.id);
+  toggleModal(false, elements.editTaskModal);
+  refreshTasksUI();
+  } 
+
 };
 
 
 
   toggleModal(true, elements.editTaskModal); // Show the edit task modal
- }
+ 
 
 function saveTaskChanges(taskId) {
 
@@ -293,7 +310,7 @@ function saveTaskChanges(taskId) {
   // Close the modal and refresh the UI to reflect the changes
   toggleModal(false, elements.editTaskModal);
   refreshTasksUI();
- }
+ 
 
 /*************************************************************************************************************************************************/
 
