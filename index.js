@@ -308,19 +308,16 @@ function saveTaskChanges(taskId) {
     status: statusSelect.value,
   };
 
-  }
-
-
+  
   // Update task using a hlper functoin
   patchTask(taskId,updatedTask);
  
 
   // Close the modal and refresh the UI to reflect the changes
   toggleModal(false, elements.editTaskModal);
-
   refreshTasksUI();
   location.reload();
- 
+}
 
 /*************************************************************************************************************************************************/
 
