@@ -72,7 +72,7 @@ function displayBoards(boards) {
       styleActiveBoard(activeBoard);
     });
     boardsContainer.appendChild(boardElement);
-  });
+  }));
 
 }
 
@@ -95,20 +95,23 @@ function filterAndDisplayTasksByBoard(boardName) {
     const tasksContainer = document.createElement("div");
     column.appendChild(tasksContainer);
 
-    filteredTasks.filter(task => task.status === status).forEach(task => { 
-      const taskElement = document.createElement("div");
-      taskElement.classList.add("task-div");
-      taskElement.textContent = task.title;
-      taskElement.setAttribute('data-task-id', task.id);
+    filteredTasks
+      .filter((task) => task.status === status).filter(task => task.status === status)
+      .forEach((task) => { 
+        const taskElement = document.createElement("div");
+        taskElement.classList.add("task-div");
+        taskElement.textContent = task.title;
+        taskElement.setAttribute('data-task-id', task.id);
 
       // Listen for a click event on each task and open a modal
       taskElement.addEventListener('click', () => { 
+
         openEditTaskModal(task);
       });
 
       tasksContainer.appendChild(taskElement);
     });
-  });
+  }));
 }
 
 
@@ -119,28 +122,31 @@ function refreshTasksUI() {
 // Styles the active board by adding an active class
 // TASK: Fix Bugs
 function styleActiveBoard(boardName) {
-  document.querySelectorAll('.board-btn').foreach(btn => { 
+  document.querySelectorAll('.board-btn').foreach((btn => { 
     
     if(btn.textContent === boardName) {
       btn.classList.add('active'); 
-    }
-    else {
+    } else {
       btn.classList.remove('active'); 
     }
-  });
+  }));
 }
 
 
 function addTaskToUI(task) {
-  const column = document.querySelector(`.column-div[data-status="${task.status}"]`); 
+  const column = document.querySelector(
+    `.column-div[data-status="${task.status}"]`
+  ); 
   if (!column) {
     console.error(`Column not found for status: ${task.status}`);
     return;
   }
 
-  let tasksContainer = column.querySelector('.tasks-container');
+  let tasksContainer = column.tasksContainerAll;
   if (!tasksContainer) {
-    console.warn(`Tasks container not found for status: ${task.status}, creating one.`);
+    console.warn(
+      `Tasks container not found for status: ${task.status}, creating one.`
+    );
     tasksContainer = document.createElement('div');
     tasksContainer.className = 'tasks-container';
     column.appendChild(tasksContainer);
@@ -151,7 +157,7 @@ function addTaskToUI(task) {
   taskElement.textContent = task.title; // Modify as needed
   taskElement.setAttribute('data-task-id', task.id);
   
-  tasksContainer.appendChild(); 
+  tasksContainer.appendChild(taskElement); 
 }
 
 
@@ -159,7 +165,9 @@ function addTaskToUI(task) {
 function setupEventListeners() {
   // Cancel editing task event listener
   const cancelEditBtn = document.getElementById('cancel-edit-btn');
-  cancelEditBtn.addEventListener('click', () => toggleModal(false, elements.editTaskModal));
+  cancelEditBtn.addEventListener('click', () => 
+    toggleModal(false, elements.editTaskModal)
+);
 
   // Cancel adding new task event listener
   const cancelAddTaskBtn = document.getElementById('cancel-add-task-btn');
