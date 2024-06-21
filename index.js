@@ -224,22 +224,16 @@ function addTask(event) {
 
 
   // Collect form data (assuming form fields exist)
-  const taskTitle = document.getElementById('task-title').value;
-  const taskStatus = document.getElementById('task-status').value;
-  const board = activeBoard;
+  const  task = {
+    title = document.getElementById('task-title').value,
+    status = document.getElementById('select-status').value,
+    description = document.getElementById('desc-input').value,
+    board = activeBoard,
 
 
   //Assign user input to the task object
-    const task = {
-      id: Date.now(),
-      taskTitle,
-      taskStatus,
-      board
-      
- 
-    };
-
-
+   
+  };
     const newTask = createNewTask(task);
     if (newTask) {
       addTaskToUI(newTask);
@@ -252,25 +246,36 @@ function addTask(event) {
 
 
 function toggleSidebar(show) {
-  const sidebar = document.getElementById('sidebar');
-  sidebar.style.display = show ? 'block' : 'none';
-  localStorage.setItem('showSideBar', show);
- 
+  is (show) {
+    elements.sidebar.display = 'flex';
+    elements.showSideBarBtn.style.display = 'none';
+  } else {
+    elements.sidebar.style.display = 'none';
+    elements.showSideBarBtn.style.display = 'block';
+  }
 }
 
 function toggleTheme() {
-  const themeIsLight =element.themeSwitch.checked;
-  document.body.classList.toggle('light-theme', themeIsLight);
-  localStorage.setItem('light-theme', themeIsLight ? 'enabled' : 'disabled');
- 
+  const body = document.body;
+  
+  body.classList.toggle('light-theme');
+  body.classList.toggle('dark-theme');
+
+
+  const logo = document.getElementById('logo');
+
+  const isLightTheme = document.body.contains('light-theme');
+
+  logo.src = isLightTheme ? './assets/logo-light.svg' : './assets/logo-dark.svg'; 
 }
+
 
 
 
 function openEditTaskModal(task) {
 
   // Set task details in modal inputs
-  document.getElementById('edit-task-title').value = task.title;
+  const titleInput = document.getElementById('edit-task-title-input');
   document.getElementById('edit-task-status').value = task.status;
 
   // Get button elements from the task modal
